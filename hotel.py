@@ -66,5 +66,5 @@ else:
 
 st.markdown('''
 ---
-**Credit:** App creada en `Python` + `Streamlit` por la [Secretaria de Administración y Finanzas de la CDMX](https://www.finanzas.cdmx.gob.mx) (aka [SAF](http://youtube.com/dataprofessor))
+**Creditos:** App creada en `Python` + `Streamlit` por la [Secretaria de Administración y Finanzas de la CDMX](https://www.finanzas.cdmx.gob.mx) (aka [SAF](https://www.finanzas.cdmx.gob.mx))
 ''')
