@@ -3,7 +3,11 @@ import pandas as pd
 import numpy as np
 from pandas_profiling import ProfileReport
 from streamlit_pandas_profiling import st_profile_report
+from PIL import Image
 import pydeck
+
+cabezera = Image.open('data/images/cabezera_saf.jpg')
+st.image(cabezera, width = 1200)
 
 # Web App Title
 st.markdown('''
@@ -15,9 +19,6 @@ st.markdown('''
 # Upload CSV data
 with st.sidebar.header('1. Carga tus datos tipo CSV.'):
     uploaded_file = st.sidebar.file_uploader("Carga tu archivo CSV de entrada. ", type=["csv"])
-    st.sidebar.markdown("""
-[Archivo CSV de muestra ](https://raw.githubusercontent.com/dataprofessor/data/master/delaney_solubility_with_descriptors.csv)
-""")
 
 # Pandas Profiling Report
 if uploaded_file is not None:
@@ -32,19 +33,23 @@ if uploaded_file is not None:
         return csv
 
     df = load_csv()
-    pr = ProfileReport(df, explorative=True)
+    pr = ProfileReport(df, explorative=True, config_file='config_pd.yaml')
     st.header('**DataFrame.**')
-    st.write(df)
+    st.write(df.head(100))
     st.write('---')
     st.header('**Reporte de los datos.**')
     st_profile_report(pr)
 
-    #Crear mapa
+    # Crear mapa
     st.sidebar.header('2. Crea el mapa de los hoteles.')
     if st.sidebar.checkbox('Mostrar mapa.'):
         map_data = df.iloc[:, -2:]
         st.header('**Ubicaion de los hoteles.**')
         st.map(map_data)
+
+    if st.checkbox('Descargar reporte htlm.'):
+        pr.to_file("report.html")
+
 else:
     st.info('Esperando que se cargue el archivo tipo CSV.')
     if st.button('Presiona para usar el Dataset de Ejemplo'):
@@ -63,6 +68,10 @@ else:
         st.write('---')
         st.header('**Reporte**')
         st_profile_report(pr)
+
+        if st.checkbox('Descargar reporte htlm.'):
+            pr.to_file("report.html")
+
 
 st.markdown('''
 ---
